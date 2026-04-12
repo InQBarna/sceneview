@@ -73,6 +73,9 @@ is_whitelisted() {
     .claude/scripts/check-deprecated-api.sh) return 0 ;;
     .github/workflows/quality-gate.yml) return 0 ;;
 
+    # Marketing drafts — intentionally reference third-party APIs (ArFragment etc.)
+    marketing/*.md | marketing/**/*.md) return 0 ;;
+
     # Demo recordings — historical marketing artifacts
     mcp/demo/sceneview-3.0-linkedin-video.html) return 0 ;;
     mcp/demo/sceneview-mcp-linkedin-video.html) return 0 ;;
