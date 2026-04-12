@@ -46,6 +46,18 @@
         "127.0.0.1"
       ],
       "port": 8787
+    },
+    {
+      "name": "telemetry-worker",
+      "runtimeExecutable": "npx",
+      "runtimeArgs": ["wrangler", "dev", "--config", "telemetry-worker/wrangler.toml", "--port", "8788", "--local"],
+      "port": 8788
+    },
+    {
+      "name": "samples-coverage",
+      "runtimeExecutable": "python3",
+      "runtimeArgs": ["-m", "http.server", "9292", "--directory", "samples"],
+      "port": 9292
     }
   ]
 }

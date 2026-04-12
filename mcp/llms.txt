@@ -2,9 +2,9 @@
 
 SceneView is a declarative 3D and AR SDK for Android (Jetpack Compose, Filament, ARCore) and Apple platforms — iOS, macOS, visionOS (SwiftUI, RealityKit, ARKit) — with shared core logic via Kotlin Multiplatform. Each platform uses its native renderer: Filament on Android, RealityKit on Apple.
 
-**Android — Maven artifacts (version 4.0.0-rc.1):**
-- 3D only: `io.github.sceneview:sceneview:4.0.0-rc.1`
-- AR + 3D: `io.github.sceneview:arsceneview:4.0.0-rc.1`
+**Android — Maven artifacts (version 4.0.0):**
+- 3D only: `io.github.sceneview:sceneview:4.0.0`
+- AR + 3D: `io.github.sceneview:arsceneview:4.0.0`
 
 **Apple (iOS 17+ / macOS 14+ / visionOS 1+) — Swift Package:**
 - `https://github.com/sceneview/sceneview-swift.git` (from: "3.6.0")
@@ -18,8 +18,8 @@ SceneView is a declarative 3D and AR SDK for Android (Jetpack Compose, Filament,
 ### build.gradle (app module)
 ```kotlin
 dependencies {
-    implementation("io.github.sceneview:sceneview:4.0.0-rc.1")   // 3D only
-    implementation("io.github.sceneview:arsceneview:4.0.0-rc.1") // AR (includes sceneview)
+    implementation("io.github.sceneview:sceneview:4.0.0")   // 3D only
+    implementation("io.github.sceneview:arsceneview:4.0.0") // AR (includes sceneview)
 }
 ```
 
@@ -1066,6 +1066,25 @@ SceneView(surfaceType = SurfaceType.TextureSurface, isOpaque = false)  // Textur
 - `environmentLoader.createHDREnvironment(...)` — **main thread only**.
 - Use `modelLoader.loadModelInstanceAsync(...)` or `suspend fun loadModelInstance(...)` for imperative async code.
 - Inside `SceneView { }` composable scope, you are on the main thread — safe for all Filament calls.
+
+---
+
+## Performance
+
+- **Frame budget**: 16.6ms at 60fps. Target 12ms for headroom.
+- **Cold start**: ~120ms (3D), ~350ms (AR, ARCore init dominates).
+- **APK size**: +3.2MB (sceneview), +5.1MB (sceneview + arsceneview).
+- **Memory**: ~25MB empty 3D scene, ~45MB empty AR scene.
+- **Triangle budget**: <100K per model, <200K total scene (mid-tier devices).
+- **Textures**: use KTX2 with Basis Universal, max 2048x2048 on mobile.
+- **Draw calls**: aim for <100 per frame. Merge static geometry in Blender before export.
+- **Lights**: 1 directional + IBL covers most cases. Max 2-3 additional point/spot lights.
+- **Post-processing**: Bloom ~1ms, SSAO ~2-3ms. Disable SSAO on low-end devices.
+- **Compose**: use `remember` for Position/Rotation/Scale — no allocations in composition body.
+- **Engine**: create one `rememberEngine()` at app level, share across all scenes.
+- **AR**: disable `planeRenderer` after object placement to reduce overdraw.
+- **Rerun bridge**: adds ~0.5ms when active. Gate with `BuildConfig.DEBUG`.
+- See full guide: docs/docs/performance.md
 
 ---
 
@@ -2155,7 +2174,7 @@ ferrari_f40.glb
 
 ## SceneView Web (Kotlin/JS + Filament.js)
 
-Package: `sceneview-web` v4.0.0-rc.1 — npm `sceneview-web`
+Package: `sceneview-web` v4.0.0 — npm `sceneview-web`
 Renderer: **Filament.js (WebGL2/WASM)** — same Filament engine as SceneView Android, compiled to WebAssembly.
 Requires: Chrome 79+, Edge 79+, Firefox 78+ (WebGL2). Safari 15+ (WebGL2).
 
@@ -2958,7 +2977,7 @@ Backpressure is absorbed by `rateHz`. Wire format: JSON-lines consumed by
 | visionOS | RealityKit | SwiftUI | via SceneViewSwift | Alpha |
 | Web | Filament.js + WebXR | Kotlin/JS | `samples/web-demo` | Alpha |
 
-SceneView Web (sceneview-web v4.0.0-rc.1) — see "## SceneView Web (Kotlin/JS + Filament.js)" section above for the full API reference.
+SceneView Web (sceneview-web v4.0.0) — see "## SceneView Web (Kotlin/JS + Filament.js)" section above for the full API reference.
 | Desktop | Software renderer | Compose Desktop | `samples/desktop-demo` | Alpha |
 | Flutter | Filament/RealityKit | PlatformView | `samples/flutter-demo` | Alpha |
 | React Native | Filament/RealityKit | Fabric | `samples/react-native-demo` | Alpha |
@@ -2970,7 +2989,7 @@ Install:
 ```yaml
 # pubspec.yaml
 dependencies:
-  sceneview_flutter: ^4.0.0-rc.1
+  sceneview_flutter: ^4.0.0
 ```
 
 Widgets: `SceneView` (3D), `ARSceneView` (AR).
