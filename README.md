@@ -46,7 +46,7 @@ SceneView(environment: .studio) {
 
 ```html
 <!-- Web — one script tag -->
-<script src="https://cdn.jsdelivr.net/npm/sceneview-web@3.6.0/sceneview.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/sceneview-web@4.0.0/sceneview.js"></script>
 <script> SceneView.modelViewer("canvas", "model.glb") </script>
 ```
 
@@ -87,18 +87,18 @@ dependencies {
 
 **iOS / macOS / visionOS** (Swift Package Manager):
 ```
-https://github.com/sceneview/sceneview-swift.git  (from: 3.6.0)
+https://github.com/sceneview/sceneview-swift.git  (from: 4.0.0)
 ```
 
 **Web** (sceneview.js — one line):
 ```html
-<script src="https://cdn.jsdelivr.net/npm/sceneview-web@3.6.0/sceneview.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/sceneview-web@4.0.0/sceneview.js"></script>
 ```
 
 **Web** (Kotlin/JS):
 ```kotlin
 dependencies {
-    implementation("io.github.sceneview:sceneview-web:3.6.0")
+    implementation("io.github.sceneview:sceneview-web:4.0.0")
 }
 ```
 
@@ -219,7 +219,7 @@ ARSceneView(planeDetection: .horizontal) { position, arView in
 }
 ```
 
-**Install:** `https://github.com/sceneview/sceneview-swift.git` (SPM, from 3.6.0)
+**Install:** `https://github.com/sceneview/sceneview-swift.git` (SPM, from 4.0.0)
 
 ---
 
@@ -229,7 +229,7 @@ The lightest way to add 3D to any website. One script tag, one function call.
 ~25 KB library powered by Filament.js WASM — the same engine behind Android SceneView.
 
 ```html
-<script src="https://cdn.jsdelivr.net/npm/sceneview-web@3.6.0/sceneview.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/sceneview-web@4.0.0/sceneview.js"></script>
 <script> SceneView.modelViewer("canvas", "model.glb") </script>
 ```
 
