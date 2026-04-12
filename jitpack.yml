@@ -1,0 +1,7 @@
+jdk:
+  - openjdk17
+before_install:
+  - sdk install gradle 8.14.4
+install:
+  - chmod +x gradlew
+  - ./gradlew -PGROUP=$GROUP -PVERSION_NAME=$VERSION :sceneview:publishToMavenLocal :arsceneview:publishToMavenLocal :sceneview-core:publishToMavenLocal

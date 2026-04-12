@@ -25,7 +25,14 @@ subprojects {
     plugins.withId("com.vanniktech.maven.publish") {
         mavenPublishing {
             publishToMavenCentral()
-            signAllPublications()
+            // Skip signing on JitPack (no GPG keys) and when no signing key is
+            // configured locally. To sign, set signing.* in ~/.gradle/gradle.properties.
+            def hasSigningKey = project.hasProperty("signing.keyId") ||
+                                project.hasProperty("signing.key") ||
+                                System.getenv("ORG_GRADLE_PROJECT_signingInMemoryKey")
+            if (hasSigningKey && System.getenv("JITPACK") != "true") {
+                signAllPublications()
+            }
         }
     }
 
