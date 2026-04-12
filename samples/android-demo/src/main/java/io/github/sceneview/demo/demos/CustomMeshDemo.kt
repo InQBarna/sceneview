@@ -7,99 +7,53 @@ import androidx.compose.animation.core.rememberInfiniteTransition
 import androidx.compose.animation.core.tween
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
 import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.Slider
 import androidx.compose.material3.Switch
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableFloatStateOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
-import com.google.android.filament.IndexBuffer
-import com.google.android.filament.RenderableManager
-import com.google.android.filament.VertexBuffer
+import androidx.compose.ui.unit.dp
+import dev.romainguy.kotlin.math.Float3
 import io.github.sceneview.SceneView
 import io.github.sceneview.demo.DemoScaffold
+import io.github.sceneview.math.Position
 import io.github.sceneview.math.Rotation
 import io.github.sceneview.rememberCameraManipulator
 import io.github.sceneview.rememberEngine
 import io.github.sceneview.rememberMaterialLoader
-import java.nio.ByteBuffer
-import java.nio.ByteOrder
 
 /**
- * Demonstrates [MeshNode] with a hand-crafted pyramid built from raw [VertexBuffer] and
- * [IndexBuffer]. A toggle enables continuous Y-axis rotation.
+ * Demonstrates custom geometry using built-in geometry nodes composed together.
  *
- * Since [MeshNode] does not expose position/rotation parameters directly, the mesh is wrapped
- * inside a parent [Node] that controls transform.
+ * Builds a "molecule" structure from SphereNodes and CylinderNodes to show
+ * how primitive shapes can be combined into complex custom geometries.
+ * A toggle enables continuous rotation and a slider adjusts the scale.
  */
 @Composable
 fun CustomMeshDemo(onBack: () -> Unit) {
     var rotating by remember { mutableStateOf(true) }
+    var scale by remember { mutableFloatStateOf(1f) }
 
     val engine = rememberEngine()
     val materialLoader = rememberMaterialLoader(engine)
 
-    // Build vertex and index buffers for a 4-sided pyramid (5 vertices, 6 triangles = 18 indices).
-    val vertexBuffer = remember(engine) {
-        // Positions: apex + 4 base corners
-        val positions = floatArrayOf(
-            // apex
-            0.0f, 0.6f, 0.0f,
-            // base front-left
-            -0.4f, -0.3f, 0.4f,
-            // base front-right
-            0.4f, -0.3f, 0.4f,
-            // base back-right
-            0.4f, -0.3f, -0.4f,
-            // base back-left
-            -0.4f, -0.3f, -0.4f
-        )
-        val posBuffer = ByteBuffer.allocateDirect(positions.size * 4)
-            .order(ByteOrder.nativeOrder())
-            .apply { asFloatBuffer().put(positions); rewind() }
-
-        VertexBuffer.Builder()
-            .vertexCount(5)
-            .bufferCount(1)
-            .attribute(
-                VertexBuffer.VertexAttribute.POSITION,
-                0,
-                VertexBuffer.AttributeType.FLOAT3,
-                0,
-                12
-            )
-            .build(engine)
-            .also { it.setBufferAt(engine, 0, posBuffer) }
+    val sphereMaterial = remember(materialLoader) {
+        materialLoader.createColorInstance(Color.Cyan)
     }
-
-    val indexBuffer = remember(engine) {
-        // 4 side faces + 2 base triangles = 6 triangles = 18 indices
-        val indices = shortArrayOf(
-            // Side faces
-            0, 1, 2,
-            0, 2, 3,
-            0, 3, 4,
-            0, 4, 1,
-            // Base (two triangles)
-            1, 3, 2,
-            1, 4, 3
-        )
-        val idxBuffer = ByteBuffer.allocateDirect(indices.size * 2)
-            .order(ByteOrder.nativeOrder())
-            .apply { asShortBuffer().put(indices); rewind() }
-
-        IndexBuffer.Builder()
-            .indexCount(indices.size)
-            .bufferType(IndexBuffer.Builder.IndexType.USHORT)
-            .build(engine)
-            .also { it.setBuffer(engine, idxBuffer) }
+    val bondMaterial = remember(materialLoader) {
+        materialLoader.createColorInstance(Color.Gray)
     }
 
     val infiniteTransition = rememberInfiniteTransition(label = "meshRotation")
@@ -122,6 +76,13 @@ fun CustomMeshDemo(onBack: () -> Unit) {
                 Text("Auto-Rotate", style = MaterialTheme.typography.bodyMedium)
                 Switch(checked = rotating, onCheckedChange = { rotating = it })
             }
+            Spacer(modifier = Modifier.height(12.dp))
+            Text("Scale: ${"%.1f".format(scale)}x", style = MaterialTheme.typography.labelLarge)
+            Slider(
+                value = scale,
+                onValueChange = { scale = it },
+                valueRange = 0.5f..2.5f
+            )
         }
     ) {
         SceneView(
@@ -130,16 +91,67 @@ fun CustomMeshDemo(onBack: () -> Unit) {
             materialLoader = materialLoader,
             cameraManipulator = rememberCameraManipulator()
         ) {
-            // Wrap MeshNode in a parent Node that handles rotation,
-            // since MeshNode does not have position/rotation parameters.
+            // Molecule-like structure: center atom + 4 outer atoms connected by bonds
             Node(
-                rotation = if (rotating) Rotation(y = rotationY) else Rotation()
+                rotation = if (rotating) Rotation(y = rotationY) else Rotation(),
+                scale = Float3(scale)
             ) {
-                MeshNode(
-                    primitiveType = RenderableManager.PrimitiveType.TRIANGLES,
-                    vertexBuffer = vertexBuffer,
-                    indexBuffer = indexBuffer,
-                    materialInstance = materialLoader.createColorInstance(Color.Cyan)
+                // Center atom
+                SphereNode(
+                    materialInstance = sphereMaterial,
+                    radius = 0.2f,
+                    position = Position(0f, 0f, 0f)
+                )
+                // Top atom + bond
+                SphereNode(
+                    materialInstance = sphereMaterial,
+                    radius = 0.12f,
+                    position = Position(0f, 0.6f, 0f)
+                )
+                CylinderNode(
+                    materialInstance = bondMaterial,
+                    radius = 0.03f,
+                    height = 0.4f,
+                    position = Position(0f, 0.3f, 0f)
+                )
+                // Right atom + bond
+                SphereNode(
+                    materialInstance = sphereMaterial,
+                    radius = 0.12f,
+                    position = Position(0.6f, 0f, 0f)
+                )
+                CylinderNode(
+                    materialInstance = bondMaterial,
+                    radius = 0.03f,
+                    height = 0.4f,
+                    position = Position(0.3f, 0f, 0f),
+                    rotation = Rotation(z = 90f)
+                )
+                // Left atom + bond
+                SphereNode(
+                    materialInstance = sphereMaterial,
+                    radius = 0.12f,
+                    position = Position(-0.6f, 0f, 0f)
+                )
+                CylinderNode(
+                    materialInstance = bondMaterial,
+                    radius = 0.03f,
+                    height = 0.4f,
+                    position = Position(-0.3f, 0f, 0f),
+                    rotation = Rotation(z = 90f)
+                )
+                // Front atom + bond
+                SphereNode(
+                    materialInstance = sphereMaterial,
+                    radius = 0.12f,
+                    position = Position(0f, -0.3f, 0.5f)
+                )
+                CylinderNode(
+                    materialInstance = bondMaterial,
+                    radius = 0.03f,
+                    height = 0.4f,
+                    position = Position(0f, -0.15f, 0.25f),
+                    rotation = Rotation(x = 45f)
                 )
             }
         }

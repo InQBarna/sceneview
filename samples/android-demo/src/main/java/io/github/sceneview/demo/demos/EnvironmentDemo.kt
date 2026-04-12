@@ -100,7 +100,7 @@ fun EnvironmentDemo(onBack: () -> Unit) {
             modelInstance?.let { instance ->
                 ModelNode(
                     modelInstance = instance,
-                    scaleToUnits = 2.0f
+                    scaleToUnits = 1.0f
                 )
             }
         }
