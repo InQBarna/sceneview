@@ -80,6 +80,79 @@ export const TOOL_DEFINITIONS: readonly ToolDefinition[] = [
       additionalProperties: false,
     },
   },
+  // ── New api.gouv.fr bridge-API tools (v2.0) ──────────────────────────────
+  {
+    name: "french_admin__rechercher_entreprise",
+    description:
+      "Search French companies by name, SIREN, or SIRET via api.gouv.fr (API Entreprise). Returns registration info, legal form, NAF code, and address.",
+    inputSchema: {
+      type: "object",
+      properties: {
+        query: { type: "string", description: "Company name, SIREN, or SIRET." },
+        codePostal: { type: "string" },
+        departement: { type: "string" },
+        limit: { type: "number" },
+      },
+      required: ["query"],
+      additionalProperties: false,
+    },
+  },
+  {
+    name: "french_admin__details_entreprise",
+    description:
+      "Get detailed company info (dirigeants, effectif, chiffre d'affaires, beneficiaires effectifs) from a SIREN or SIRET via api.gouv.fr.",
+    inputSchema: {
+      type: "object",
+      properties: {
+        siren: { type: "string" },
+        siret: { type: "string" },
+      },
+      additionalProperties: false,
+    },
+  },
+  {
+    name: "french_admin__valider_adresse",
+    description:
+      "Validate and normalize a French postal address via api-adresse.data.gouv.fr (BAN). Returns standardized address, coordinates, and confidence score.",
+    inputSchema: {
+      type: "object",
+      properties: {
+        address: { type: "string" },
+        codePostal: { type: "string" },
+        city: { type: "string" },
+      },
+      required: ["address"],
+      additionalProperties: false,
+    },
+  },
+  {
+    name: "french_admin__geocodage_inverse",
+    description:
+      "Reverse geocode GPS coordinates to a French postal address via api-adresse.data.gouv.fr (BAN). Returns nearest address, commune, and code postal.",
+    inputSchema: {
+      type: "object",
+      properties: {
+        lat: { type: "number" },
+        lon: { type: "number" },
+      },
+      required: ["lat", "lon"],
+      additionalProperties: false,
+    },
+  },
+  {
+    name: "french_admin__info_commune",
+    description:
+      "Get detailed commune info (population, code INSEE, arrondissement, EPCI, departement, region) via geo.api.gouv.fr.",
+    inputSchema: {
+      type: "object",
+      properties: {
+        nom: { type: "string" },
+        codePostal: { type: "string" },
+        codeInsee: { type: "string" },
+      },
+      additionalProperties: false,
+    },
+  },
 ];
 
 export async function dispatchTool(

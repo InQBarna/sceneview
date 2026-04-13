@@ -189,6 +189,60 @@ export const TOOL_DEFINITIONS: readonly ToolDefinition[] = [
       required: ["building_type", "area_sqm"],
     },
   },
+  // ── New cadastre + DPE bridge-API tools (v2.1) ─────────────────────────
+  {
+    name: "architecture__search_parcels",
+    description:
+      "Search cadastral parcels by address or coordinates via cadastre.gouv.fr API. Returns parcel IDs, boundaries, and zoning info.",
+    inputSchema: {
+      type: "object",
+      properties: {
+        address: { type: "string" },
+        lat: { type: "number" },
+        lon: { type: "number" },
+        commune: { type: "string" },
+      },
+    },
+  },
+  {
+    name: "architecture__get_parcel_info",
+    description:
+      "Get detailed parcel information (area, section, zoning constraints, building rights) from a cadastral parcel ID.",
+    inputSchema: {
+      type: "object",
+      properties: {
+        parcelId: { type: "string" },
+        commune: { type: "string" },
+      },
+      required: ["parcelId"],
+    },
+  },
+  {
+    name: "architecture__search_dpe",
+    description:
+      "Search DPE (Diagnostic de Performance Energetique) energy ratings for buildings via ADEME open data. Filter by address, commune, or DPE class.",
+    inputSchema: {
+      type: "object",
+      properties: {
+        address: { type: "string" },
+        commune: { type: "string" },
+        dpeClass: { type: "string" },
+        limit: { type: "number" },
+      },
+    },
+  },
+  {
+    name: "architecture__get_dpe_stats",
+    description:
+      "Get aggregated DPE energy rating statistics for a commune or department. Returns distribution by class, average consumption, and renovation recommendations.",
+    inputSchema: {
+      type: "object",
+      properties: {
+        commune: { type: "string" },
+        department: { type: "string" },
+      },
+    },
+  },
 ];
 
 const HANDLERS: Record<string, (args: Record<string, unknown>) => unknown> = {
@@ -204,11 +258,37 @@ const HANDLERS: Record<string, (args: Record<string, unknown>) => unknown> = {
   architecture__sustainability_analysis: (a) => sustainabilityAnalysis(a as never),
 };
 
+// New bridge-API tools — upstream handlers not yet vendored from
+// architecture-mcp v2.1. These are registered in TOOL_DEFINITIONS so
+// tools/list surfaces them, and the dispatcher returns a stub response
+// until the real API clients ship.
+const STUB_TOOLS: ReadonlySet<string> = new Set([
+  "architecture__search_parcels",
+  "architecture__get_parcel_info",
+  "architecture__search_dpe",
+  "architecture__get_dpe_stats",
+]);
+
 export async function dispatchTool(
   toolName: string,
   args: Record<string, unknown> | undefined,
   _ctx: DispatchContext = {},
 ): Promise<ToolResult> {
+  // Stub bridge-API tools not yet wired to upstream
+  if (STUB_TOOLS.has(toolName)) {
+    return {
+      content: [
+        {
+          type: "text",
+          text:
+            `architecture-mcp bridge-API stub: ${toolName} is registered but ` +
+            `the upstream cadastre/DPE API client is not yet vendored. ` +
+            `See hub-gateway/src/libraries/architecture.ts.`,
+        },
+      ],
+    };
+  }
+
   const handler = HANDLERS[toolName];
   if (!handler) {
     return {

@@ -71,6 +71,72 @@ export const TOOL_DEFINITIONS: readonly ToolDefinition[] = [
       additionalProperties: false,
     },
   },
+  // ── New Strava + nutrition bridge-API tools (v2.0) ────────────────────────
+  {
+    name: "health_fitness__get_strava_activities",
+    description:
+      "Fetch recent Strava activities (runs, rides, swims) with distance, duration, pace, and heart rate. Requires Strava API token. Informational only.",
+    inputSchema: {
+      type: "object",
+      properties: {
+        activityType: { type: "string", description: "run, ride, swim, walk." },
+        limit: { type: "number" },
+        after: { type: "string", description: "ISO date to filter activities after." },
+      },
+      additionalProperties: false,
+    },
+  },
+  {
+    name: "health_fitness__get_strava_athlete_stats",
+    description:
+      "Get Strava athlete stats (YTD totals, all-time totals, recent totals for run/ride/swim). Requires Strava API token. Informational only.",
+    inputSchema: {
+      type: "object",
+      properties: {},
+      additionalProperties: false,
+    },
+  },
+  {
+    name: "health_fitness__analyze_strava_trends",
+    description:
+      "Analyze training trends from Strava data: weekly volume, pace progression, heart rate zones, rest days, and overtraining risk. Informational, not medical advice.",
+    inputSchema: {
+      type: "object",
+      properties: {
+        period: { type: "string", description: "1w, 4w, 12w, 1y." },
+        activityType: { type: "string" },
+      },
+      additionalProperties: false,
+    },
+  },
+  {
+    name: "health_fitness__search_nutrition",
+    description:
+      "Search food nutrition data (calories, macros, micronutrients) via USDA/Nutritionix API. Returns per-serving and per-100g values. Informational only.",
+    inputSchema: {
+      type: "object",
+      properties: {
+        query: { type: "string" },
+        servingSize: { type: "string" },
+      },
+      required: ["query"],
+      additionalProperties: false,
+    },
+  },
+  {
+    name: "health_fitness__log_meal_nutrition",
+    description:
+      "Log a meal and compute total nutrition (calories, protein, carbs, fat, fiber) from a list of food items with quantities. Informational only.",
+    inputSchema: {
+      type: "object",
+      properties: {
+        items: { type: "array", description: "List of {food, quantity, unit} objects." },
+        mealType: { type: "string", description: "breakfast, lunch, dinner, snack." },
+      },
+      required: ["items"],
+      additionalProperties: false,
+    },
+  },
 ];
 
 export async function dispatchTool(

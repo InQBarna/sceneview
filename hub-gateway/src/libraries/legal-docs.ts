@@ -65,6 +65,58 @@ export const TOOL_DEFINITIONS: readonly ToolDefinition[] = [
       additionalProperties: false,
     },
   },
+  // ── New EN document generators + DMCA (v2.0) ─────────────────────────────
+  {
+    name: "legal_docs__generate_en_privacy_policy",
+    description:
+      "Generate an English-language privacy policy from structured inputs (company name, data collected, third parties, retention). GDPR + CCPA compliant template. Informational only.",
+    inputSchema: {
+      type: "object",
+      properties: {
+        companyName: { type: "string" },
+        websiteUrl: { type: "string" },
+        dataCollected: { type: "array" },
+        thirdParties: { type: "array" },
+        retentionDays: { type: "number" },
+        jurisdiction: { type: "string" },
+      },
+      required: ["companyName"],
+      additionalProperties: false,
+    },
+  },
+  {
+    name: "legal_docs__generate_en_tos",
+    description:
+      "Generate English-language Terms of Service from structured inputs (service description, liability limits, governing law). Informational only.",
+    inputSchema: {
+      type: "object",
+      properties: {
+        companyName: { type: "string" },
+        serviceDescription: { type: "string" },
+        governingLaw: { type: "string" },
+        liabilityLimit: { type: "string" },
+        arbitration: { type: "boolean" },
+      },
+      required: ["companyName", "serviceDescription"],
+      additionalProperties: false,
+    },
+  },
+  {
+    name: "legal_docs__generate_dmca_notice",
+    description:
+      "Generate a DMCA takedown notice from structured inputs (copyrighted work, infringing URL, contact info). Informational only.",
+    inputSchema: {
+      type: "object",
+      properties: {
+        copyrightOwner: { type: "string" },
+        copyrightedWork: { type: "string" },
+        infringingUrl: { type: "string" },
+        contactEmail: { type: "string" },
+      },
+      required: ["copyrightOwner", "copyrightedWork", "infringingUrl"],
+      additionalProperties: false,
+    },
+  },
 ];
 
 export async function dispatchTool(
