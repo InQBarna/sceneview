@@ -107,7 +107,7 @@ Same JSON config as above. The server communicates via **stdio** using the stand
 | `get_sample` | Returns a complete, compilable code sample for any of 33 scenarios (Kotlin or Swift) |
 | `list_samples` | Browse all samples, filter by tag (`ar`, `3d`, `ios`, `animation`, `geometry`, ...) |
 | `validate_code` | Checks generated code against 15+ rules before presenting it to the user |
-| `get_node_reference` | Full API reference for any of 26+ node types -- exact signatures, defaults, examples |
+| `get_node_reference` | Full API reference for any of 29+ node types -- exact signatures, defaults, examples |
 | `list_platforms` | List all supported platforms with their status, renderer, and framework |
 | `get_setup` | Gradle + manifest setup for Android 3D or AR projects |
 | `get_ios_setup` | SPM dependency, Info.plist, and SwiftUI integration for iOS/macOS/visionOS |
@@ -211,7 +211,7 @@ The assistant calls `render_3d_preview` and returns an interactive link to a bro
 - Always use the current SceneView 3.6.0 API surface
 - Generate correct **Compose-native** 3D/AR code for Android
 - Generate correct **SwiftUI-native** code for iOS/macOS/visionOS
-- Know about all 26+ node types and their exact parameters
+- Know about all 29+ node types and their exact parameters
 - Validate code against 15+ rules before presenting it
 - Provide working, tested sample code for 33 scenarios
 
