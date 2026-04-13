@@ -481,6 +481,62 @@ CylinderNode(
 
 ---
 
+## ConeNode
+
+A cone pointing upward along the Y-axis with a circular base cap.
+
+```kotlin
+ConeNode(
+    radius: Float = 1.0f,                 // base radius
+    height: Float = 2.0f,
+    center: Position = Position(0f),
+    sideCount: Int = 24,                   // polygon resolution
+    materialInstance: MaterialInstance? = null,
+    // …transform params…
+)
+```
+
+Useful for arrows, indicators, or procedural trees.
+
+---
+
+## TorusNode
+
+A donut (torus) shape defined by a major radius (ring centre) and minor radius (tube thickness).
+
+```kotlin
+TorusNode(
+    majorRadius: Float = 1.0f,             // centre-to-tube distance
+    minorRadius: Float = 0.3f,             // tube thickness
+    center: Position = Position(0f),
+    majorSegments: Int = 32,               // ring resolution
+    minorSegments: Int = 16,               // tube cross-section resolution
+    materialInstance: MaterialInstance? = null,
+    // …transform params…
+)
+```
+
+---
+
+## CapsuleNode
+
+A cylinder with hemispherical caps — the canonical physics collision shape.
+Total height = `height + 2 * radius`.
+
+```kotlin
+CapsuleNode(
+    radius: Float = 0.5f,                 // hemisphere + tube radius
+    height: Float = 2.0f,                 // cylinder section only
+    center: Position = Position(0f),
+    capStacks: Int = 8,                    // hemisphere subdivision
+    sideSlices: Int = 24,                  // circumference resolution
+    materialInstance: MaterialInstance? = null,
+    // …transform params…
+)
+```
+
+---
+
 ## PlaneNode
 
 A flat quad. Useful as a ground plane, a billboard surface, or a drop shadow.
