@@ -199,7 +199,7 @@ Plane detected → `anchor` set → Compose recomposes → model appears. Clear 
 
 ## Apple (iOS / macOS / visionOS)
 
-Native Swift Package built on RealityKit. 17 node types.
+Native Swift Package built on RealityKit. 19 node types.
 
 ```swift
 SceneView(environment: .studio) {
@@ -283,7 +283,7 @@ claude mcp add sceneview -- npx sceneview-mcp
 - **Only** Compose-native 3D/AR SDK for Android — no alternative exists
 - **Official successor** to Google Sceneform (deprecated 2021)
 - **~5MB** footprint vs 50-100MB+ for Unity/Unreal
-- **29+ node types** as declarative composables
+- **35+ node types** as declarative composables
 - **MCP server** with 28+ tools — no other 3D SDK has this
 
 Listed on the [MCP Registry](https://registry.modelcontextprotocol.io). See the [MCP README](./mcp/README.md) for full setup and tool reference.

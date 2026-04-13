@@ -2382,7 +2382,7 @@ The `sceneview-mcp` server exposes 18 tools and 2 resources for AI assistants.
 ### Reference tools
 | Tool | Parameters | Description |
 |---|---|---|
-| `get_node_reference` | `nodeType: string` | Full API reference for any of 29+ node types -- exact signatures, defaults, examples |
+| `get_node_reference` | `nodeType: string` | Full API reference for any of 35+ node types -- exact signatures, defaults, examples |
 | `get_migration_guide` | _(none)_ | Every breaking change from SceneView 2.x to 3.0 with before/after code |
 | `get_platform_roadmap` | _(none)_ | Multi-platform status and timeline (Android, iOS, KMP, Web, Desktop) |
 | `get_best_practices` | `topic?: string` | Performance, architecture, memory, and threading guidance |

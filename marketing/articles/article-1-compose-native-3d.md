@@ -109,7 +109,7 @@ Supported AR features: plane detection, image tracking, face mesh, cloud anchors
 | AR built-in | Yes (ARCore) | Plugin | No | Yes |
 | Active | v4.0.0 (2026) | Yes | Yes | Deprecated (2021) |
 | Learning curve | Low | High | Very high | Low |
-| Scene graph | 29+ node types | Full engine | None | 5 node types |
+| Scene graph | 35+ node types | Full engine | None | 5 node types |
 | Cross-platform | Android, iOS, Web | All | Android only | Android only |
 
 SceneView wraps Filament internally — same rendering quality, 100x less code.
