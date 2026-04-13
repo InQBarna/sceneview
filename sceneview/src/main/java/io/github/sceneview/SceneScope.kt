@@ -26,10 +26,13 @@ import com.google.android.filament.RenderableManager
 import com.google.android.filament.Scene as FilamentScene
 import com.google.android.filament.VertexBuffer
 import io.github.sceneview.environment.Environment
+import io.github.sceneview.geometries.Capsule
+import io.github.sceneview.geometries.Cone
 import io.github.sceneview.geometries.Cube
 import io.github.sceneview.geometries.Cylinder
 import io.github.sceneview.geometries.Plane
 import io.github.sceneview.geometries.Sphere
+import io.github.sceneview.geometries.Torus
 import io.github.sceneview.geometries.UvScale
 import io.github.sceneview.loaders.EnvironmentLoader
 import io.github.sceneview.loaders.MaterialLoader
@@ -44,6 +47,8 @@ import io.github.sceneview.math.Color
 import io.github.sceneview.math.Position2
 import io.github.sceneview.node.BillboardNode as BillboardNodeImpl
 import io.github.sceneview.node.CameraNode as CameraNodeImpl
+import io.github.sceneview.node.CapsuleNode as CapsuleNodeImpl
+import io.github.sceneview.node.ConeNode as ConeNodeImpl
 import io.github.sceneview.node.CubeNode as CubeNodeImpl
 import io.github.sceneview.node.CylinderNode as CylinderNodeImpl
 import io.github.sceneview.node.ImageNode as ImageNodeImpl
@@ -59,6 +64,7 @@ import io.github.sceneview.node.ReflectionProbeNode as ReflectionProbeNodeCompos
 import io.github.sceneview.node.ShapeNode as ShapeNodeImpl
 import io.github.sceneview.node.SphereNode as SphereNodeImpl
 import io.github.sceneview.node.TextNode as TextNodeImpl
+import io.github.sceneview.node.TorusNode as TorusNodeImpl
 import io.github.sceneview.node.VideoNode as VideoNodeImpl
 import io.github.sceneview.node.ViewNode as ViewNodeImpl
 
@@ -527,6 +533,177 @@ open class SceneScope @RestrictTo(RestrictTo.Scope.LIBRARY_GROUP_PREFIX) constru
                     radius = radius, height = height, center = center, sideCount = sideCount
                 )
                 prevCylinderGeometry.value = current
+            }
+            node.position = position
+            node.rotation = rotation
+            node.scale = scale
+        }
+        NodeLifecycle(node, content)
+    }
+
+    // ── ConeNode ─────────────────────────────────────────────────────────────────────────────────
+
+    /**
+     * A cone geometry node.
+     *
+     * @param radius           Base radius in meters.
+     * @param height           Height of the cone in meters.
+     * @param center           Center of the cone in local space.
+     * @param sideCount        Number of sides (polygon resolution).
+     * @param materialInstance The material instance to apply.
+     * @param position         World-space position.
+     * @param rotation         World-space rotation (Euler angles in degrees).
+     * @param scale            Uniform or non-uniform scale.
+     * @param apply            Additional configuration on the [ConeNodeImpl].
+     * @param content          Optional child nodes.
+     */
+    @Composable
+    fun ConeNode(
+        radius: Float = Cone.DEFAULT_RADIUS,
+        height: Float = Cone.DEFAULT_HEIGHT,
+        center: Position = Cone.DEFAULT_CENTER,
+        sideCount: Int = Cone.DEFAULT_SIDE_COUNT,
+        materialInstance: MaterialInstance? = null,
+        position: Position = Position(x = 0f),
+        rotation: Rotation = Rotation(x = 0f),
+        scale: Scale = Scale(1f),
+        apply: ConeNodeImpl.() -> Unit = {},
+        content: (@Composable NodeScope.() -> Unit)? = null
+    ) {
+        val node = remember(engine) {
+            ConeNodeImpl(
+                engine = engine,
+                radius = radius,
+                height = height,
+                center = center,
+                sideCount = sideCount,
+                materialInstance = materialInstance
+            ).apply(apply)
+        }
+        val prevConeGeometry = remember { mutableStateOf(listOf<Any?>(radius, height, center, sideCount)) }
+        SideEffect {
+            val current = listOf<Any?>(radius, height, center, sideCount)
+            if (current != prevConeGeometry.value) {
+                node.updateGeometry(radius = radius, height = height, center = center, sideCount = sideCount)
+                prevConeGeometry.value = current
+            }
+            node.position = position
+            node.rotation = rotation
+            node.scale = scale
+        }
+        NodeLifecycle(node, content)
+    }
+
+    // ── TorusNode ────────────────────────────────────────────────────────────────────────────────
+
+    /**
+     * A torus (donut) geometry node.
+     *
+     * @param majorRadius      Distance from centre to tube centre in meters.
+     * @param minorRadius      Tube radius in meters.
+     * @param center           Center of the torus in local space.
+     * @param majorSegments    Segments around the ring.
+     * @param minorSegments    Segments around the tube cross-section.
+     * @param materialInstance The material instance to apply.
+     * @param position         World-space position.
+     * @param rotation         World-space rotation (Euler angles in degrees).
+     * @param scale            Uniform or non-uniform scale.
+     * @param apply            Additional configuration on the [TorusNodeImpl].
+     * @param content          Optional child nodes.
+     */
+    @Composable
+    fun TorusNode(
+        majorRadius: Float = Torus.DEFAULT_MAJOR_RADIUS,
+        minorRadius: Float = Torus.DEFAULT_MINOR_RADIUS,
+        center: Position = Torus.DEFAULT_CENTER,
+        majorSegments: Int = Torus.DEFAULT_MAJOR_SEGMENTS,
+        minorSegments: Int = Torus.DEFAULT_MINOR_SEGMENTS,
+        materialInstance: MaterialInstance? = null,
+        position: Position = Position(x = 0f),
+        rotation: Rotation = Rotation(x = 0f),
+        scale: Scale = Scale(1f),
+        apply: TorusNodeImpl.() -> Unit = {},
+        content: (@Composable NodeScope.() -> Unit)? = null
+    ) {
+        val node = remember(engine) {
+            TorusNodeImpl(
+                engine = engine,
+                majorRadius = majorRadius,
+                minorRadius = minorRadius,
+                center = center,
+                majorSegments = majorSegments,
+                minorSegments = minorSegments,
+                materialInstance = materialInstance
+            ).apply(apply)
+        }
+        val prevTorusGeometry = remember { mutableStateOf(listOf<Any?>(majorRadius, minorRadius, center, majorSegments, minorSegments)) }
+        SideEffect {
+            val current = listOf<Any?>(majorRadius, minorRadius, center, majorSegments, minorSegments)
+            if (current != prevTorusGeometry.value) {
+                node.updateGeometry(
+                    majorRadius = majorRadius, minorRadius = minorRadius,
+                    center = center, majorSegments = majorSegments, minorSegments = minorSegments
+                )
+                prevTorusGeometry.value = current
+            }
+            node.position = position
+            node.rotation = rotation
+            node.scale = scale
+        }
+        NodeLifecycle(node, content)
+    }
+
+    // ── CapsuleNode ──────────────────────────────────────────────────────────────────────────────
+
+    /**
+     * A capsule geometry node (cylinder with hemispherical caps).
+     *
+     * @param radius           Hemisphere/tube radius in meters.
+     * @param height           Cylindrical section height in meters (total = height + 2*radius).
+     * @param center           Center of the capsule in local space.
+     * @param capStacks        Hemisphere subdivision stacks.
+     * @param sideSlices       Circumference slices.
+     * @param materialInstance The material instance to apply.
+     * @param position         World-space position.
+     * @param rotation         World-space rotation (Euler angles in degrees).
+     * @param scale            Uniform or non-uniform scale.
+     * @param apply            Additional configuration on the [CapsuleNodeImpl].
+     * @param content          Optional child nodes.
+     */
+    @Composable
+    fun CapsuleNode(
+        radius: Float = Capsule.DEFAULT_RADIUS,
+        height: Float = Capsule.DEFAULT_HEIGHT,
+        center: Position = Capsule.DEFAULT_CENTER,
+        capStacks: Int = Capsule.DEFAULT_CAP_STACKS,
+        sideSlices: Int = Capsule.DEFAULT_SIDE_SLICES,
+        materialInstance: MaterialInstance? = null,
+        position: Position = Position(x = 0f),
+        rotation: Rotation = Rotation(x = 0f),
+        scale: Scale = Scale(1f),
+        apply: CapsuleNodeImpl.() -> Unit = {},
+        content: (@Composable NodeScope.() -> Unit)? = null
+    ) {
+        val node = remember(engine) {
+            CapsuleNodeImpl(
+                engine = engine,
+                radius = radius,
+                height = height,
+                center = center,
+                capStacks = capStacks,
+                sideSlices = sideSlices,
+                materialInstance = materialInstance
+            ).apply(apply)
+        }
+        val prevCapsuleGeometry = remember { mutableStateOf(listOf<Any?>(radius, height, center, capStacks, sideSlices)) }
+        SideEffect {
+            val current = listOf<Any?>(radius, height, center, capStacks, sideSlices)
+            if (current != prevCapsuleGeometry.value) {
+                node.updateGeometry(
+                    radius = radius, height = height, center = center,
+                    capStacks = capStacks, sideSlices = sideSlices
+                )
+                prevCapsuleGeometry.value = current
             }
             node.position = position
             node.rotation = rotation
