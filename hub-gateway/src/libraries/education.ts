@@ -61,6 +61,50 @@ export const TOOL_DEFINITIONS: readonly ToolDefinition[] = [
       additionalProperties: false,
     },
   },
+  // ── New OpenAlex bridge-API tools (v2.0) ──────────────────────────────────
+  {
+    name: "education__search_papers",
+    description:
+      "Search academic papers via OpenAlex API by keyword, author, or DOI. Returns title, authors, abstract, citation count, and open access URL.",
+    inputSchema: {
+      type: "object",
+      properties: {
+        query: { type: "string" },
+        author: { type: "string" },
+        doi: { type: "string" },
+        limit: { type: "number" },
+        sort: { type: "string", description: "relevance, cited_by_count, publication_date." },
+      },
+      required: ["query"],
+      additionalProperties: false,
+    },
+  },
+  {
+    name: "education__get_author_profile",
+    description:
+      "Get an academic author profile from OpenAlex (publications, h-index, citations, institutional affiliations, co-authors).",
+    inputSchema: {
+      type: "object",
+      properties: {
+        authorName: { type: "string" },
+        orcid: { type: "string" },
+      },
+      additionalProperties: false,
+    },
+  },
+  {
+    name: "education__get_citation_stats",
+    description:
+      "Get citation statistics and impact metrics for a paper (DOI) or author from OpenAlex. Returns citation count, citing works, and field-normalized impact.",
+    inputSchema: {
+      type: "object",
+      properties: {
+        doi: { type: "string" },
+        authorId: { type: "string" },
+      },
+      additionalProperties: false,
+    },
+  },
 ];
 
 export async function dispatchTool(

@@ -87,6 +87,56 @@ export const TOOL_DEFINITIONS: readonly ToolDefinition[] = [
       additionalProperties: false,
     },
   },
+  // ── New DVF bridge-API tools (v2.0) ──────────────────────────────────────
+  {
+    name: "realestate__search_property_transactions",
+    description:
+      "Search real property transactions (DVF open data) by commune, date range, and property type. Returns sale prices, dates, and property details.",
+    inputSchema: {
+      type: "object",
+      properties: {
+        commune: { type: "string", description: "Commune name or INSEE code." },
+        codePostal: { type: "string" },
+        dateMin: { type: "string", description: "YYYY-MM-DD" },
+        dateMax: { type: "string", description: "YYYY-MM-DD" },
+        propertyType: { type: "string", description: "maison, appartement, terrain." },
+        limit: { type: "number" },
+      },
+      required: ["commune"],
+      additionalProperties: false,
+    },
+  },
+  {
+    name: "realestate__get_price_per_sqm",
+    description:
+      "Get median price per square meter for a commune or neighborhood using DVF transaction data. Returns stats by property type and trend over time.",
+    inputSchema: {
+      type: "object",
+      properties: {
+        commune: { type: "string" },
+        codePostal: { type: "string" },
+        propertyType: { type: "string" },
+        period: { type: "string", description: "1y, 2y, 5y." },
+      },
+      required: ["commune"],
+      additionalProperties: false,
+    },
+  },
+  {
+    name: "realestate__compare_neighborhoods",
+    description:
+      "Compare real estate metrics (price/sqm, transaction volume, price trends) across multiple communes or neighborhoods using DVF data.",
+    inputSchema: {
+      type: "object",
+      properties: {
+        communes: { type: "array", description: "List of commune names or INSEE codes." },
+        propertyType: { type: "string" },
+        period: { type: "string" },
+      },
+      required: ["communes"],
+      additionalProperties: false,
+    },
+  },
 ];
 
 export async function dispatchTool(

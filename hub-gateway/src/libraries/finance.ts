@@ -66,6 +66,49 @@ export const TOOL_DEFINITIONS: readonly ToolDefinition[] = [
       additionalProperties: false,
     },
   },
+  // ── New market data bridge-API tools (v2.0, was @thomasgorisse/finance-mcp) ──
+  {
+    name: "finance__get_stock_quote",
+    description:
+      "Get a real-time stock quote (price, change, volume, market cap) for a ticker symbol via a market data API. Read-only, NEVER places orders.",
+    inputSchema: {
+      type: "object",
+      properties: {
+        symbol: { type: "string", description: "Ticker symbol (e.g. AAPL, MSFT)." },
+        exchange: { type: "string" },
+      },
+      required: ["symbol"],
+      additionalProperties: false,
+    },
+  },
+  {
+    name: "finance__get_crypto_price",
+    description:
+      "Get current cryptocurrency price, 24h change, and market cap for a coin ID (bitcoin, ethereum, etc.) via CoinGecko API. Read-only.",
+    inputSchema: {
+      type: "object",
+      properties: {
+        coinId: { type: "string", description: "CoinGecko coin ID (e.g. bitcoin, ethereum)." },
+        vsCurrency: { type: "string", description: "USD, EUR, GBP (default: USD)." },
+      },
+      required: ["coinId"],
+      additionalProperties: false,
+    },
+  },
+  {
+    name: "finance__get_exchange_rates",
+    description:
+      "Get current exchange rates for a base currency against one or more target currencies via ECB/forex data. Read-only.",
+    inputSchema: {
+      type: "object",
+      properties: {
+        baseCurrency: { type: "string", description: "ISO 4217 code (e.g. USD, EUR, GBP)." },
+        targetCurrencies: { type: "array", description: "List of ISO 4217 codes." },
+      },
+      required: ["baseCurrency"],
+      additionalProperties: false,
+    },
+  },
 ];
 
 export async function dispatchTool(
