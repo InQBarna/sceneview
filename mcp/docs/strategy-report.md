@@ -144,7 +144,7 @@ Filesystem, Git, Memory, Sequential Thinking, Time, Fetch, Everything — ce son
 #### Finance
 | Concurrent | Description |
 |---|---|
-| **@thomasgorisse/finance-mcp** (NOUS) | Standalone |
+| **personal-finance-mcp** (NOUS) | Standalone |
 | Financial Datasets MCP | Top 10 (CyberPress) |
 | Norman Finance | Officiel |
 | Stripe MCP | Paiements (officiel) |
@@ -156,7 +156,7 @@ Filesystem, Git, Memory, Sequential Thinking, Time, Fetch, Everything — ce son
 #### SEO
 | Concurrent | Description |
 |---|---|
-| **@thomasgorisse/seo-mcp** (NOUS) | Standalone |
+| **seo-mcp (deprecated)** (NOUS) | Standalone |
 | Google Search Console MCP (mcp-gsc) | 500+ stars, données réelles |
 | Google Analytics MCP | Officiel Google |
 | DataForSEO MCP | API pro, données SERP |
@@ -270,10 +270,10 @@ Filesystem, Git, Memory, Sequential Thinking, Time, Fetch, Everything — ce son
 | **realestate-mcp** | Immobilier | Moyenne | TOP 5 | MOYEN |
 | **cooking-mcp** | Cuisine | Moyenne | TOP 5 | FAIBLE |
 | **education-mcp** | Éducation | Moyenne | OUTSIDER | FAIBLE |
-| **@thomasgorisse/finance-mcp** | Finance | Forte | OUTSIDER | TRÈS FAIBLE |
+| **personal-finance-mcp** | Finance | Forte | OUTSIDER | TRÈS FAIBLE |
 | **health-fitness-mcp** | Santé | Forte | OUTSIDER | FAIBLE |
 | **travel-mcp** | Voyage | Moyenne | OUTSIDER | FAIBLE |
-| **@thomasgorisse/seo-mcp** | SEO | Très forte | OUTSIDER | TRÈS FAIBLE |
+| **seo-mcp (deprecated)** | SEO | Très forte | OUTSIDER | TRÈS FAIBLE |
 | **devops-mcp** | DevOps | Très forte | OUTSIDER | TRÈS FAIBLE |
 | **productivity-mcp** | Productivité | Très forte | OUTSIDER | TRÈS FAIBLE |
 | **freelance-tools-mcp** | Freelance | Faible | TOP 3 | MOYEN |
@@ -309,7 +309,7 @@ Filesystem, Git, Memory, Sequential Thinking, Time, Fetch, Everything — ce son
 3. **Dispersion** : 21 MCPs = maintenance lourde. Les MCPs en position faible (SEO, DevOps, Productivity) ne peuvent pas rivaliser avec les officiels.
 4. **Pas sur awesome-mcp-servers** : La page dit "We do not accept PRs. Submit on https://mcpservers.org/submit" — il faut passer par le formulaire.
 5. **Pas sur les registries majeurs** : PulseMCP (12,870+), Glama (20,324), mcpservers.org — nos MCPs doivent y être listés.
-6. **Nommage npm** : "french-admin-mcp", "cooking-mcp" — pas de scope @thomasgorisse/ uniforme, pas de branding cohérent.
+6. **Nommage npm** : "french-admin-mcp", "cooking-mcp" — scope @thomasgorisse supprimé — tous les packages sont unscoped ou sous org safe.
 7. **README/descriptions npm** : Probablement pas optimisés pour le SEO npm (mots-clés, badges, exemples).
 
 ### Opportunités
@@ -335,10 +335,10 @@ Filesystem, Git, Memory, Sequential Thinking, Time, Fetch, Everything — ce son
 
 | MCP | Raison |
 |---|---|
-| **@thomasgorisse/seo-mcp** | Google, Semrush, DataForSEO dominent. Pas viable. |
+| **seo-mcp (deprecated)** | Google, Semrush, DataForSEO dominent. Pas viable. |
 | **devops-mcp** | Jenkins, Docker, K8s, Terraform ont des MCPs officiels. |
 | **productivity-mcp** | Asana (44 tools), Zapier (8K apps). Impossible de rivaliser. |
-| **@thomasgorisse/finance-mcp** | Financial Datasets est top 10 mondial, Stripe officiel. |
+| **personal-finance-mcp** | Financial Datasets est top 10 mondial, Stripe officiel. |
 
 **Action** : Ne pas supprimer de npm (garde la visibilité), mais ne plus investir de temps.
 
