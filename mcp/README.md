@@ -47,10 +47,10 @@ After subscribing, you'll receive a `sv_live_…` API key. Set it via the `SCENE
 **One command -- no install required:**
 
 ```bash
-npx sceneview-mcp@beta
+npx sceneview-mcp
 ```
 
-On startup you'll see a `[sceneview-mcp] v4.0.0-beta.1 — LITE (free tools only)` banner on stderr. Set `SCENEVIEW_API_KEY` to flip into `HOSTED` mode.
+On startup you'll see a `[sceneview-mcp] v4.0.1 — LITE (free tools only)` banner on stderr. Set `SCENEVIEW_API_KEY` to flip into `HOSTED` mode.
 
 > **Anonymous telemetry** is enabled on the free tier (MCP client name/version and tool names — no personal data, no prompt content). Opt out with `SCENEVIEW_TELEMETRY=0`. See [PRIVACY.md](./PRIVACY.md#telemetry-free-tier) for the full payload shape.
 
