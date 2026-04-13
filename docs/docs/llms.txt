@@ -1176,7 +1176,7 @@ React Native (Turbo Module / Fabric), KMP Compose iOS (UIKitView).
 ```swift
 // Package.swift
 dependencies: [
-    .package(url: "https://github.com/sceneview/sceneview-swift.git", from: "4.0.0")
+    .package(url: "https://github.com/sceneview/sceneview-swift.git", from: "4.0.1")
 ]
 ```
 

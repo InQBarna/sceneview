@@ -18,7 +18,7 @@
 **sceneview-swift SPM repo created:**
 - `https://github.com/sceneview/sceneview-swift` — NEW REPO
 - Tag `v4.0.0`, Package.swift valid, 72 files (Sources + Tests)
-- **All 15 docs/llms.txt/README files updated** from `from: "3.6.0"` → `from: "4.0.0"`
+- **All 15 docs/llms.txt/README files updated** from `from: "4.0.1"` → `from: "4.0.0"`
 - MCP bundle rebuilt with updated llms.txt
 
 **3 new geometry nodes (TorusNode, ConeNode, CapsuleNode):**

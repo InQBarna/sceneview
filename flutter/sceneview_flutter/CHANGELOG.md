@@ -1,6 +1,6 @@
-## 4.0.0-rc.1
+## 4.0.1
 
-- Version alignment with SceneView v4.0.0-rc.1
+- Version alignment with SceneView v4.0.1
 
 ## 3.6.2
 
